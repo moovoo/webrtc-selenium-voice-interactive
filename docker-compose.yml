@@ -1,0 +1,23 @@
+version: '3'
+services:
+  chrome:
+    image: selenium/standalone-chrome
+    shm_size: 2g
+    environment:
+      PULSE_SERVER: pulseaudio
+    depends_on:
+      - pulseaudio
+
+  pulseaudio:
+    build: pulseaudio_server
+
+  testproject:
+    build: test_project
+    volumes:
+      - ./:/artifacts/
+    environment:
+      PULSE_SERVER: pulseaudio
+    depends_on:
+      - pulseaudio
+      - chrome
+    command: pytest --driver Remote --selenium-host chrome --selenium-port 4444 --capability browserName chrome --html=/artifacts/report.html

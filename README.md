@@ -9,25 +9,14 @@ testing complex audio scenarios, SIP calls, IVRs etc. when default browser fake 
 ## How to run the example
 Build images:
 ```shell
-cd pulseaudio_server/
-sudo podman build -t pulseaudio .
-cd ../test_project
-sudo podman build -t testproject .
+docker compose build
 ```
 Run containers in a separate network: 
 ```shell
-sudo podman network create test1
-# run pulseaudio server
-sudo podman run -d --name=pulse --network=test1 pulseaudio
-# run standalone chrome, important to set PULSE_SERVER to corresponding hostname or ip address
-sudo podman run -d --name chrome -e PULSE_SERVER=pulse --network=test1 --shm-size="2g" selenium/standalone-chrome
-# run the test, PULSE_SERVER also must be set. also remote selenium address is 'chrome' as per container name
-sudo podman run -it --rm -v "$(pwd):/artifacts/" --network=test1 -e PULSE_SERVER=pulse testproject pytest --driver Remote --selenium-host chrome --selenium-port 4444 --capabilit
-y browserName chrome --html=/artifacts/report.html
+docker compose up
 ```
 You should see report.html and speakers.wav with a few "hello world" phrases in your current directory meaning that browser has successfully recorded an audio from fake microphone and then played the recording back to a fake speakers
 
-TODO: docker+compose
 ### Note:
 Running multiple browsers/tabs/calls with single Pulseaudio server makes it use same sinks
 Changing default sinks runtime causes all clients to switch to a new default sink
