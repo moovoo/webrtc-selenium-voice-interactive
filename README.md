@@ -2,7 +2,7 @@
 General idea:
 1. Have a PulseAudio instance running with TCP transport enabled with special null sinks
 2. Run a headless browser with PULSE_SERVER environment variable
-3. Communicate with PulseAudio server using pulseaudio-utils (`paplay`, `pacat`) 
+3. Communicate with PulseAudio server using pulseaudio-utils (`paplay`, `pacat`) to record incoming audio or simualte user input speech
 
 Purpose: 
 testing complex audio scenarios, SIP calls, IVRs etc. when default browser fake audio device is not suitable  
